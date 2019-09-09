@@ -3,9 +3,12 @@ const Intent = require('./intent')
 class BeginIntent extends Intent {
   getResponse() {
     const state = this.request.session.attributes.state;
-    if (state != 'starting' && state != 'done') {
-      return this.wrongIntentResponse("We're already started!");
-    }
+
+    // Because we used a required 'slot', this doesn't work.  Need to rework the
+    // name setup.
+    //if (state != 'starting' && state != 'done') {
+      //return this.wrongIntentResponse("We're already started!");
+    //}
 
     const name = this.request.request.intent.slots.name.value
     this.attributes.state = 'rolling'

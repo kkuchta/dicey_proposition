@@ -29,7 +29,7 @@ class RollIntent extends Intent {
 
     if (remaining > 0) {
       this.attributes.state = 'rolling';
-      return this.response(rollText + `${remaining} rolls to go.`);
+      return this.response(rollText + ` ${remaining} rolls to go.`);
 
     } else {
       this.attributes.state = 'done';
