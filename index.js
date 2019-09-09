@@ -11,7 +11,7 @@ const STATE_CLASSES = {
 app.use(express.json())
 
 function launch(req) {
-  console.log("launchRequest here");
+  console.log("launchRequest here")
   return {
     "version": "1.0",
     "sessionAttributes": {
@@ -24,27 +24,27 @@ function launch(req) {
         "text": "Welcome to Dicy Proposition!  Say 'start' to start."
       },
     }
-  };
+  }
 }
 
 app.post('/', (req, res) => {
   // TODO: verify that this request actually came from alexa
 
   const requestType = req.body.request.type
-  let response = {};
-  let stateString = null;
+  let response = {}
+  let stateString = null
   switch (requestType) {
-    case 'LaunchRequest': stateString = 'launching'; break;
-    case 'IntentRequest': stateString = req.body.session.attributes.state; break;
-    case 'SessionEndedRequest': response = {}; break;
-    default: console.log('Unhandled request type: ', requestType); break;
+    case 'LaunchRequest': stateString = 'launching'; break
+    case 'IntentRequest': stateString = req.body.session.attributes.state; break
+    case 'SessionEndedRequest': response = {}; break
+    default: console.log('Unhandled request type: ', requestType); break
   }
   if (stateString != null) {
-    console.log("State=", stateString);
+    console.log("State=", stateString)
     const state = new STATE_CLASSES[stateString](req.body)
-    response = state.getResponse();
+    response = state.getResponse()
   }
-  res.send(response);
+  res.send(response)
 })
 
 app.listen(port, () => console.log(`Dicey Proposition game up on ${port}!`))

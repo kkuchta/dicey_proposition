@@ -1,20 +1,20 @@
 class State {
   constructor(request) {
     this.request = request
-    this.attributes = request.session.attributes;
+    this.attributes = request.session.attributes
     if (this.attributes == null) {
       this.attributes = {}
     }
     if (request.request.intent != null) {
-      this.intent = request.request.intent.name;
+      this.intent = request.request.intent.name
     }
   }
 
   finishUp() {
     let text = 'Thanks for playing Dicey Proposition!'
-    const bestScore = this.attributes.bestScore;
+    const bestScore = this.attributes.bestScore
     if (bestScore != null) {
-      text += ` Your high score this session was ${bestScore}.`;
+      text += ` Your high score this session was ${bestScore}.`
     }
     return this.response(text, true)
   }
@@ -30,7 +30,7 @@ class State {
           "text": text
         },
       }
-    };
+    }
   }
 }
 module.exports = State
