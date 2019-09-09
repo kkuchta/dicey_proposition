@@ -8,7 +8,7 @@ const QUIPS = {
   5: "Couldn't have rolled just a *little* higher?  I'm disappointed",
   6: "Don't let it go to your head"
 }
-const MAX_ROLLS = 2;
+const MAX_ROLLS = 5;
 
 class Rolling extends BaseState{
   getResponse() {
