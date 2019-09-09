@@ -13,12 +13,15 @@ const MAX_ROLLS = 5;
 class RollIntent extends Intent {
   getResponse() {
     if (this.request.session.attributes.state != 'rolling') {
-      return this.wrongIntentResponse("Can't roll before starting.");
+      return this.wrongIntentResponse("We can't roll just yet!");
     }
+
     let rolls = this.attributes.rolls
     if (rolls == null) { rolls = [] }
+
     const newRoll = Math.floor(Math.random() * Math.floor(6)) + 1;
     rolls.push(newRoll);
+
     this.attributes.rolls = rolls;
 
     const remaining = MAX_ROLLS - rolls.length;
@@ -27,9 +30,11 @@ class RollIntent extends Intent {
     if (remaining > 0) {
       this.attributes.state = 'rolling';
       return this.response(rollText + `${remaining} rolls to go.`);
+
     } else {
       this.attributes.state = 'done';
       const score = rolls.reduce((sum, i) => sum + i);
+
       let finalText = rollText + ` Your total score is ${score}.`
       if (this.attributes.bestScore > score) {
         finalText += `You didn't beat your best score of ${this.attributes.bestScore}.`
@@ -37,8 +42,10 @@ class RollIntent extends Intent {
         finalText += ` This is your best score yet.`
         this.attributes.bestScore = score;
       }
+
       finalText += " Say 'restart' to start over, or 'end' to finish."
       return this.response(finalText);
+
     }
   }
 }

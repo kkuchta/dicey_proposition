@@ -4,7 +4,7 @@ class BeginIntent extends Intent {
   getResponse() {
     const state = this.request.session.attributes.state;
     if (state != 'starting' && state != 'done') {
-      return this.wrongIntentResponse("Must begin from starting or done states");
+      return this.wrongIntentResponse("We're already started!");
     }
 
     const name = this.request.request.intent.slots.name.value

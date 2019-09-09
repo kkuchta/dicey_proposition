@@ -23,13 +23,9 @@ function launch(req) {
     }
   };
 }
-function sessionEnd(req, res) {
-  console.log("sessionEnd here");
-  return {}
-}
 
 function intent(req) {
-  console.log("intent here", req.body.request.intent.name);
+  console.log("Got intent:", req.body.request.intent.name);
 
   let intentClass = null;
   switch (req.body.request.intent.name) {
@@ -44,11 +40,14 @@ function intent(req) {
   return intent.getResponse();
 }
 
+function sessionEnd(req, res) {
+  console.log("Session end request");
+  return {}
+}
 
 app.post('/', (req, res) => {
   // TODO: verify that this request actually came from alexa
 
-  //console.log("body", req.body);
   const requestType = req.body.request.type
   let response = {};
   switch (requestType) {
@@ -60,4 +59,4 @@ app.post('/', (req, res) => {
   res.send(response);
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Dicey Proposition game up on ${port}!`))

@@ -6,9 +6,8 @@ class Intent {
 
   wrongIntentResponse(err) {
     console.log("wrongIntentResponse", err);
-    return this.response(`Sorry, you can't do that yet (${err})`);
+    return this.response(`Sorry, you can't do that right now. ${err}`);
   }
-
 
   response(text, shouldEndSession = false) {
     return {
