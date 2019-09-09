@@ -1,9 +1,12 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const BeginIntent = require('./beginIntent')
-const RollIntent = require('./rollIntent')
-const DoneIntent = require('./doneIntent')
+
+const STATE_CLASSES = {
+  launching: require('./states/launching'),
+  starting: require('./states/starting'),
+  rolling: require('./states/rolling'),
+}
 
 app.use(express.json())
 
@@ -24,37 +27,22 @@ function launch(req) {
   };
 }
 
-function intent(req) {
-  console.log("Got intent:", req.body.request.intent.name);
-
-  let intentClass = null;
-  switch (req.body.request.intent.name) {
-    case 'BeginIntent': intentClass = BeginIntent; break;
-    case 'RollIntent': intentClass = RollIntent; break;
-    case 'DoneIntent': intentClass = DoneIntent; break;
-    case 'AMAZON.FallbackIntent': console.log('err: fallback intent'); break;
-  }
-
-  const intent = new intentClass(req.body)
-  debugger
-  return intent.getResponse();
-}
-
-function sessionEnd(req, res) {
-  console.log("Session end request");
-  return {}
-}
-
 app.post('/', (req, res) => {
   // TODO: verify that this request actually came from alexa
 
   const requestType = req.body.request.type
   let response = {};
+  let stateString = null;
   switch (requestType) {
-    case 'LaunchRequest': response = launch(req); break;
-    case 'SessionEndedRequest': response = sessionEnd(req); break;
-    case 'IntentRequest': response = intent(req); break;
+    case 'LaunchRequest': stateString = 'launching'; break;
+    case 'IntentRequest': stateString = req.body.session.attributes.state; break;
+    case 'SessionEndedRequest': response = {}; break;
     default: console.log('Unhandled request type: ', requestType); break;
+  }
+  if (stateString != null) {
+    console.log("State=", stateString);
+    const state = new STATE_CLASSES[stateString](req.body)
+    response = state.getResponse();
   }
   res.send(response);
 })
