@@ -16,9 +16,9 @@ class Rolling extends BaseState{
   getResponse() {
     if (this.intent == 'RollIntent') {
 
+      // Generate a new random roll and add it to our running list
       let rolls = this.attributes.rolls
       if (rolls == null) { rolls = [] }
-
       const newRoll = Math.floor(Math.random() * Math.floor(6)) + 1
       rolls.push(newRoll)
 
@@ -29,13 +29,19 @@ class Rolling extends BaseState{
 
       // TODO: split into 2 states, maybe.
       if (remaining > 0) {
+
+        // If we have more rolls left, keep on rollin'
         this.attributes.state = 'rolling'
         return this.response(rollText + ` ${remaining} rolls to go.`)
 
       } else {
+
+        // If we're out of rolls, transition to our end state (which is really
+        // just our starting state with glasses and a fake moustache)
         this.attributes.state = 'starting'
         const score = rolls.reduce((sum, i) => sum + i)
 
+        // Print ut some useful messages on their score.
         let finalText = rollText + ` Your total score is ${score}.`
         if (this.attributes.bestScore > score) {
           finalText += `You didn't beat your best score of ${this.attributes.bestScore}.`
@@ -49,6 +55,7 @@ class Rolling extends BaseState{
       }
 
     } else if (this.intent == 'DoneIntent') {
+      // You can check out any time you like
       return this.finishUp()
     } else {
       return this.response("I'm sorry, I don't know that one.  Try saying 'roll'.")
