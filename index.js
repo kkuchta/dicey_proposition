@@ -10,23 +10,6 @@ const STATE_CLASSES = {
 
 app.use(express.json())
 
-function launch(req) {
-  console.log("launchRequest here")
-  return {
-    "version": "1.0",
-    "sessionAttributes": {
-      "state": "starting"
-    },
-    "response": {
-      "shouldEndSession": false,
-      "outputSpeech": {
-        "type": "PlainText",
-        "text": "Welcome to Dicy Proposition!  Say 'start' to start."
-      },
-    }
-  }
-}
-
 app.post('/', (req, res) => {
   // TODO: verify that this request actually came from alexa
 
